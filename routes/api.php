@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,5 +28,12 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);    
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);   
+    
+    Route::post('/addtask', [TaskController::class, 'addTask']);
+    Route::delete('/delete-task/{id}', [TaskController::class, 'deleteTask']);
+    Route::post('/update-task/{id}', [TaskController::class, 'updateTask']);
+    Route::post('/task-list', [TaskController::class, 'viewTask']);
+
+
 });
