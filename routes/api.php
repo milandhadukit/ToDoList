@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskComplateController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,5 +37,8 @@ Route::group([
     Route::post('/update-task/{id}', [TaskController::class, 'updateTask']);
     Route::post('/task-list', [TaskController::class, 'viewTask']);
 
+    Route::post('/submit-task', [TaskComplateController::class, 'complateTask']);
+    Route::post('/search-task', [TaskComplateController::class, 'searchTaskDate']);
+    Route::post('/search-todo', [TaskComplateController::class, 'searchToDo']); // total todo list search 
 
 });

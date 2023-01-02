@@ -15,6 +15,10 @@ class CreateTaskComplatesTable extends Migration
     {
         Schema::create('task_complates', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();   
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('task_id')->nullable();
+            $table->string('date')->nullable();
             $table->timestamps();
         });
     }
