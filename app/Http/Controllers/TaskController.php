@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    
     public function addTask(Request $request)
     {
         try {
@@ -112,6 +111,35 @@ class TaskController extends Controller
 
             $taskView = Task::all();
             return $this->sendResponse('success', $taskView);
+        } catch (\Exception $e) {
+            return $this->sendError('error', $e->getMessage());
+        }
+    }
+
+    public function searchToDoListAdmin(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                //  'name' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+            // dd(Auth::user());
+            if (empty(Auth::user())) {
+                return $this->wrongPass('Sorry', 'Plz Login');
+            } else {
+                if (Auth::user()->role != 'Admin') {
+                    return $this->wrongPass('Sorry', ' Sorry Not Access');
+                }
+
+                $inputeName = $request->name;
+                $searchData = Task::select('name')
+                    ->where('name', 'LIKE', "%{$inputeName}%")
+                    ->get();
+
+                return $this->sendResponse('success', $searchData);
+            }
         } catch (\Exception $e) {
             return $this->sendError('error', $e->getMessage());
         }

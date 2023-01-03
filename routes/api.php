@@ -35,10 +35,13 @@ Route::group([
     Route::post('/addtask', [TaskController::class, 'addTask']);
     Route::delete('/delete-task/{id}', [TaskController::class, 'deleteTask']);
     Route::post('/update-task/{id}', [TaskController::class, 'updateTask']);
+    Route::post('/search-task-admin', [TaskController::class, 'searchToDoListAdmin']); //admin
     Route::post('/task-list', [TaskController::class, 'viewTask']);
+   
 
     Route::post('/submit-task', [TaskComplateController::class, 'complateTask']);
     Route::post('/search-task', [TaskComplateController::class, 'searchTaskDate']);
     Route::post('/search-todo', [TaskComplateController::class, 'searchToDo']); // total todo list search 
+    Route::post('/update-complated/{id}', [TaskComplateController::class, 'updateCompalateTask']);
 
 });

@@ -109,9 +109,6 @@ class TaskComplateController extends Controller
                 // $dateAll = \DB::select("select `date`, `task_id` from `task_complates` where `date` >= ? AND date = ?",[$inputDate,$inputDate]);
                 // dd(\DB::getQueryLog());
 
-                
-
-
                 # Enter date and date field data get
                 $dateAll = TaskComplate::select('date', 'task_id')
                     ->where('date', '>=', $inputDate)
@@ -123,7 +120,6 @@ class TaskComplateController extends Controller
                     ->get()
                     ->pluck('name', 'id')
                     ->toArray();
-                   
 
                 #init output
                 $returnOut = [];
@@ -156,11 +152,34 @@ class TaskComplateController extends Controller
         }
     }
 
+    public function updateCompalateTask(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'task_id' => 'required',
+            ]);
+            if ($validator->fails()) {
+                return response()->json($validator->errors()->toJson(), 400);
+            }
 
+            if (empty(Auth::user())) {
+                return $this->wrongPass('Sorry', 'Plz Login');
+            }
+            $dateToday = Carbon::now();
+            $updateData = TaskComplate::find($id);
 
+            $submitedTaskUpdate = [
+                'user_id' => auth()->user()->id,
+                'date' => $dateToday->format('Y-m-d'),
+                'task_id' => json_encode($request->task_id),
+            ];
 
-
-
+            $updateData->update($submitedTaskUpdate);
+            return $this->sendResponse('success', 'successfully Update');
+        } catch (\Exception $e) {
+            return $this->sendError('error', $e->getMessage());
+        }
+    }
 
     
 }
